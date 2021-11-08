@@ -4,6 +4,8 @@
 import os 
 from flask import Flask, request, jsonify
 from google.cloud import firestore
+from google.cloud import storage
+import uuid
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -11,6 +13,13 @@ app = Flask(__name__)
 # Initialize Firestore DB
 db = firestore.Client()
 todo_ref = db.collection('todos')
+
+#Initialize Cloud Storage
+#CLOUD_STORAGE_BUCKET = os.environ.get('CLOUD_STORAGE_BUCKET')
+CLOUD_STORAGE_BUCKET_NAME = "als-audio-bucket"
+storage_client = storage.Client()
+bucket = storage_client.get_bucket(CLOUD_STORAGE_BUCKET_NAME)
+
 
 @app.route('/add', methods=['POST'])
 def create():
@@ -71,6 +80,29 @@ def delete():
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"An Error Occured: {e}"
+
+@app.route('/upload_audio', methods=['POST'])
+def upload_audio():
+    destination_file_name = f'Audio{uuid.uuid1()}.wav'
+    blob = bucket.blob(destination_file_name)
+    fileName = request.json['fileName']
+
+    blob.upload_from_filename(fileName)
+
+    return  "File {} uploaded to {}.".format(
+            fileName, destination_file_name
+        )
+@app.route('/retrieve_audio', methods=['GET'])
+def retrieve_audio():
+    fileName = request.json['fileName']
+    destination_file_name = "download.wav"
+    blob = bucket.blob(fileName)
+    blob.download_to_filename(destination_file_name)
+
+    return "Downloaded storage object {} from bucket {} to local file {}.".format(
+            fileName, CLOUD_STORAGE_BUCKET_NAME, destination_file_name
+        )
+
 
 port = int(os.environ.get('PORT', 8080))
 if __name__ == '__main__':
