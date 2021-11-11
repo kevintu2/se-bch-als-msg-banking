@@ -2,6 +2,7 @@ import { getAnalytics } from "firebase/analytics";
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import axios from "axios";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBsq899DDVYofdoPCf2bqVBwHw_lvhejyE",
@@ -22,19 +23,30 @@ const firebaseConfig = {
   const signInWithGoogle = async () => {
     try {
       const res = await auth.signInWithPopup(googleProvider);
-      const user = res.user;
-      const query = await db
-        .collection("users")
-        .where("uid", "==", user.uid)
-        .get();
-      if (query.docs.length === 0) {
-        await db.collection("users").add({
-          uid: user.uid,
-          name: user.displayName,
-          authProvider: "google",
-          email: user.email,
-        });
-      }
+      res.user.getIdTokenResult().then(async idTokenResult => {
+        const token = "Bearer "+idTokenResult.token;
+
+        const response = await axios.post("https://api-dev-z2scpwkwva-uc.a.run.app/register", {
+          headers: {
+              'Authorization': token
+          },
+      })
+      console.log(response)
+      });
+      
+      // const user = res.user;
+      // const query = await db
+      //   .collection("users")
+      //   .where("uid", "==", user.uid)
+      //   .get();
+      // if (query.docs.length === 0) {
+      //   await db.collection("users").add({
+      //     uid: user.uid,
+      //     name: user.displayName,
+      //     authProvider: "google",
+      //     email: user.email,
+      //   });
+      // }
     } catch (err) {
       console.error(err);
       alert(err.message);

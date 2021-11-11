@@ -3,6 +3,7 @@
 # Required imports
 import os
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from google.cloud import firestore
 import google.auth.transport.requests
 from google.oauth2 import id_token
@@ -12,6 +13,7 @@ HTTP_REQUEST = google.auth.transport.requests.Request()
 
 # Initialize Flask app
 app = Flask(__name__)
+CORS(app)
 
 # Initialize Firestore DB
 db = firestore.Client()
