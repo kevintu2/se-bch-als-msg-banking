@@ -51,8 +51,8 @@ def register():
         return {'message': 'No data provided'}, 400
     auth_header = request.headers['Authorization']
     idtoken = auth_header.split(' ').pop()
-    claims = idtoken.verify_firebase_token(
-        id_token, HTTP_REQUEST, audience=os.environ.get('GOOGLE_CLOUD_PROJECT'))
+    claims = id_token.verify_firebase_token(
+        idtoken, HTTP_REQUEST, audience=os.environ.get('GOOGLE_CLOUD_PROJECT'))
     user_ref = users_collection.document(claims['sub'])
     user_snapshot = user_ref.get()
     if user_snapshot.exists:
