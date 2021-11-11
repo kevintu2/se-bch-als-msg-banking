@@ -24,10 +24,17 @@ const firebaseConfig = {
     try {
       const res = await auth.signInWithPopup(googleProvider);
       res.user.getIdTokenResult().then(async idTokenResult => {
+        const user = res.user;
         const token = "Bearer "+idTokenResult.token;
-
-        const response = await axios.post("https://api-dev-z2scpwkwva-uc.a.run.app/register", {
+        console.log(token);
+        const response = await axios.post("https://api-dev-z2scpwkwva-uc.a.run.app/register",{
+              uid: user.uid,
+              name: user.displayName,
+              authProvider: "google",
+              email: user.email,
+            }, {
           headers: {
+              'Content-Type': 'application/json',
               'Authorization': token
           },
       })
