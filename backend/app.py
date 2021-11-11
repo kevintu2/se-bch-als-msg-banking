@@ -1,20 +1,22 @@
 # app.py
 
 # Required imports
-import os 
+import os
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from google.cloud import firestore
 from google.cloud import storage
 import uuid
 
 # Initialize Flask app
 app = Flask(__name__)
+CORS(app)
 
 # Initialize Firestore DB
 db = firestore.Client()
 todo_ref = db.collection('todos')
 
-#Initialize Cloud Storage
+# Initialize Cloud Storage
 #CLOUD_STORAGE_BUCKET = os.environ.get('CLOUD_STORAGE_BUCKET')
 CLOUD_STORAGE_BUCKET_NAME = "als-audio-bucket"
 storage_client = storage.Client()
@@ -35,6 +37,7 @@ def create():
     except Exception as e:
         return f"An Error Occured: {e}"
 
+
 @app.route('/list', methods=['GET'])
 def read():
     """
@@ -54,6 +57,7 @@ def read():
     except Exception as e:
         return f"An Error Occured: {e}"
 
+
 @app.route('/update', methods=['POST', 'PUT'])
 def update():
     """
@@ -68,6 +72,7 @@ def update():
     except Exception as e:
         return f"An Error Occured: {e}"
 
+
 @app.route('/delete', methods=['GET', 'DELETE'])
 def delete():
     """
@@ -81,6 +86,7 @@ def delete():
     except Exception as e:
         return f"An Error Occured: {e}"
 
+
 @app.route('/upload_audio', methods=['POST'])
 def upload_audio():
     destination_file_name = f'Audio{uuid.uuid1()}.wav'
@@ -89,9 +95,11 @@ def upload_audio():
 
     blob.upload_from_filename(fileName)
 
-    return  "File {} uploaded to {}.".format(
-            fileName, destination_file_name
-        )
+    return "File {} uploaded to {}.".format(
+        fileName, destination_file_name
+    )
+
+
 @app.route('/retrieve_audio', methods=['GET'])
 def retrieve_audio():
     fileName = request.json['fileName']
@@ -100,8 +108,8 @@ def retrieve_audio():
     blob.download_to_filename(destination_file_name)
 
     return "Downloaded storage object {} from bucket {} to local file {}.".format(
-            fileName, CLOUD_STORAGE_BUCKET_NAME, destination_file_name
-        )
+        fileName, CLOUD_STORAGE_BUCKET_NAME, destination_file_name
+    )
 
 
 port = int(os.environ.get('PORT', 8080))
