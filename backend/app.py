@@ -1,6 +1,8 @@
 # app.py
 
 # Required imports
+import uuid
+from google.cloud import storage
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -18,6 +20,12 @@ CORS(app)
 # Initialize Firestore DB
 db = firestore.Client()
 users_collection = db.collection('users')
+
+# Initialize Cloud Storage
+#CLOUD_STORAGE_BUCKET = os.environ.get('CLOUD_STORAGE_BUCKET')
+CLOUD_STORAGE_BUCKET_NAME = "als-audio-bucket"
+storage_client = storage.Client()
+bucket = storage_client.get_bucket(CLOUD_STORAGE_BUCKET_NAME)
 
 
 def check_token(f):
@@ -57,6 +65,21 @@ def register():
 @check_token
 def login():
     return {'message': 'Successfully logged in'}, 200
+
+
+@app.route('/add', methods=['POST'])
+def create():
+    """
+        create() : Add document to Firestore collection with request body.
+        Ensure you pass a custom ID as part of json body in post request,
+        e.g. json={'id': '1', 'title': 'Write a blog post'}
+    """
+    try:
+        id = request.json['id']
+        todo_ref.document(id).set(request.json)
+        return jsonify({"success": True}), 200
+    except Exception as e:
+        return f"An Error Occured: {e}"
 
 
 @app.route('/list', methods=['GET'])
@@ -106,6 +129,31 @@ def delete():
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"An Error Occured: {e}"
+
+
+@app.route('/upload_audio', methods=['POST'])
+def upload_audio():
+    destination_file_name = f'Audio{uuid.uuid1()}.wav'
+    blob = bucket.blob(destination_file_name)
+    fileName = request.json['fileName']
+
+    blob.upload_from_filename(fileName)
+
+    return "File {} uploaded to {}.".format(
+        fileName, destination_file_name
+    )
+
+
+@app.route('/retrieve_audio', methods=['GET'])
+def retrieve_audio():
+    fileName = request.json['fileName']
+    destination_file_name = "download.wav"
+    blob = bucket.blob(fileName)
+    blob.download_to_filename(destination_file_name)
+
+    return "Downloaded storage object {} from bucket {} to local file {}.".format(
+        fileName, CLOUD_STORAGE_BUCKET_NAME, destination_file_name
+    )
 
 
 port = int(os.environ.get('PORT', 8080))
