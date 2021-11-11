@@ -35,8 +35,8 @@ def check_token(f):
         if not auth_header:
             return {'message': 'No token provided'}, 400
         idtoken = auth_header.split(' ').pop()
-        claims = idtoken.verify_firebase_token(
-            id_token, HTTP_REQUEST, audience=os.environ.get('GOOGLE_CLOUD_PROJECT'))
+        claims = id_token.verify_firebase_token(
+            idtoken, HTTP_REQUEST, audience=os.environ.get('GOOGLE_CLOUD_PROJECT'))
         if not claims:
             return 'Unauthorized', 401
         return f(*args, **kwargs)
