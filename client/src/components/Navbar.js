@@ -5,6 +5,9 @@ import styled from "styled-components";
 import BCHlogo from "./assets/BCHlogo.png";
 import "./Navbar.css";
 
+import { auth, logout} from "./firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+
 function MainNav() {
     const Styles = styled.div`
       .navbar-custom {
@@ -17,6 +20,14 @@ function MainNav() {
         }
       }
     `;
+
+    const [user, loading, error] = useAuthState(auth);
+    let button;
+    if (user) {
+      button = <Nav className="ml-auto"><Nav.Link onClick={logout} className="login-item">Log Out</Nav.Link></Nav>
+    } else {
+      button = <Nav className="ml-auto"><Nav.Link href="/login" className="login-item">Log In</Nav.Link></Nav>
+    }
     return (
         <>
         <Styles>
@@ -27,12 +38,10 @@ function MainNav() {
                   ALS Message Ediging</Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/upload">Upload</Nav.Link>
+                        {user && <Nav.Link href="/upload">Upload</Nav.Link>}
                         <Nav.Link href="/about">About Us</Nav.Link>
                     </Nav>
-                    <Nav className="ml-auto">
-                      <Nav.Link href="/login" className="login-item" style={{}}>Log In</Nav.Link>
-                    </Nav>
+                    {button}
               </Container>
               </Navbar>
             </Styles>
