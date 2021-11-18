@@ -7,6 +7,7 @@ import Login from "./components/pages/Login";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import React from 'react';
@@ -18,6 +19,7 @@ function App() {
     <div>
       <Router>
         <MainNav />
+        <br />
         <Switch>
             <Route exact path={process.env.PUBLIC_URL + "/"} component={Home} />
             <Route path={process.env.PUBLIC_URL + "/upload"} component={Upload} />

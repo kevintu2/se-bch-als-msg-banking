@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { auth, signInWithGoogle } from "../firebase";
+import { auth, signInWithFacebook, signInWithGoogle } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "./Login.css";
 
@@ -28,7 +28,7 @@ function Login() {
         <button className="login__btn login__google" onClick={signInWithGoogle}>
           Login with Google
         </button>
-        <button className="login__btn">
+        <button className="login__btn login__facebook" onClick={signInWithFacebook}>
           Login with Facebook
         </button>
       </div>
