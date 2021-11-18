@@ -15,7 +15,7 @@ function Home() {
         // maybe trigger a loading screen
         return;
       }
-      if (user) history.replace("/dashboard");
+      if (user) history.replace(process.env.PUBLIC_URL + "/dashboard");
     }, [user, loading]);
     return (
         <>

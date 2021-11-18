@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/se-bch-als-msg-banking/static/css/main.e030bde9.chunk.css",
-    "main.js": "/se-bch-als-msg-banking/static/js/main.1fec0951.chunk.js",
-    "main.js.map": "/se-bch-als-msg-banking/static/js/main.1fec0951.chunk.js.map",
+    "main.js": "/se-bch-als-msg-banking/static/js/main.ea38a937.chunk.js",
+    "main.js.map": "/se-bch-als-msg-banking/static/js/main.ea38a937.chunk.js.map",
     "runtime-main.js": "/se-bch-als-msg-banking/static/js/runtime-main.816b33b7.js",
     "runtime-main.js.map": "/se-bch-als-msg-banking/static/js/runtime-main.816b33b7.js.map",
     "static/css/2.d0993cff.chunk.css": "/se-bch-als-msg-banking/static/css/2.d0993cff.chunk.css",
@@ -21,6 +21,6 @@
     "static/css/2.d0993cff.chunk.css",
     "static/js/2.2fd73533.chunk.js",
     "static/css/main.e030bde9.chunk.css",
-    "static/js/main.1fec0951.chunk.js"
+    "static/js/main.ea38a937.chunk.js"
   ]
 }

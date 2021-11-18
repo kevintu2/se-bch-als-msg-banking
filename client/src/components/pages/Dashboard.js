@@ -25,7 +25,7 @@ function Dashboard() {
       };
       useEffect(() => {
         if (loading) return;
-        if (!user) return history.replace("/");
+        if (!user) return history.replace(process.env.PUBLIC_URL +"/");
         fetchUserName();
       }, [user, loading]);
     return (
@@ -38,7 +38,7 @@ function Dashboard() {
         </h2>
         <br/>
         <div class="col-md-12 text-center">
-            <Button className="align-center" href="/Upload">Upload your audio</Button>
+            <Button className="align-center" href={process.env.PUBLIC_URL + "/Upload"}>Upload your audio</Button>
             <div>
             Logged in as
             <div>{name}</div>

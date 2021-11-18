@@ -14,7 +14,7 @@ function Login() {
       // maybe trigger a loading screen
       return;
     }
-    if (user) history.replace("/dashboard");
+    if (user) history.replace(process.env.PUBLIC_URL + "/dashboard");
   }, [user, loading]);
   return (
     <>
@@ -28,7 +28,7 @@ function Login() {
         <button className="login__btn login__google" onClick={signInWithGoogle}>
           Login with Google
         </button>
-        <button className="login__btn login__facebook" onClick={signInWithFacebook}>
+        <button className="login__btn login__facebook" onClick={signInWithFacebook} style={{textDecoration:'line-through'}}>
           Login with Facebook
         </button>
       </div>
