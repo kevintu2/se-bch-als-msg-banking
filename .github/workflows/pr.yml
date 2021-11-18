@@ -13,7 +13,5 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
-      - name: Install Dependencies
-        run: cd client && npm i
       - name: deploy
-        run: cd client && npm run deploy
+        run: cd client && npm i && npm run deploy
