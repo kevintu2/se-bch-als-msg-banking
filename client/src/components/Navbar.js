@@ -26,7 +26,7 @@ function MainNav() {
     if (user) {
       button = <Nav className="ml-auto"><Nav.Link onClick={logout} className="login-item">Log Out</Nav.Link></Nav>
     } else {
-      button = <Nav className="ml-auto"><Nav.Link href="/login" className="login-item">Log In</Nav.Link></Nav>
+      button = <Nav className="ml-auto"><Nav.Link href="/se-bch-als-msg-banking/login" className="login-item">Log In</Nav.Link></Nav>
     }
     return (
         <>
@@ -35,11 +35,13 @@ function MainNav() {
               <Container>
                   <Navbar.Brand href="https://www.childrenshospital.org/" style={{color:'#1b4079'}}>
                   <Image src={BCHlogo} alt="Logo"/>
-                  ALS Message Ediging</Navbar.Brand>
+                  ALS Message Ediging
+                  </Navbar.Brand>
+                  <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Nav className="me-auto">
-                        <Nav.Link href="/">Home</Nav.Link>
-                        {user && <Nav.Link href="/upload">Upload</Nav.Link>}
-                        <Nav.Link href="/about">About Us</Nav.Link>
+                        <Nav.Link href={process.env.PUBLIC_URL + "/"}>Home</Nav.Link>
+                        {user && <Nav.Link href={process.env.PUBLIC_URL + "/upload"}>Upload</Nav.Link>}
+                        <Nav.Link href={process.env.PUBLIC_URL + "/about"}>About Us</Nav.Link>
                     </Nav>
                     {button}
               </Container>

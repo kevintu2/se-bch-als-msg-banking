@@ -19,7 +19,8 @@ const firebaseConfig = {
   const db = app.firestore();
   const analytics = getAnalytics(app);
   const googleProvider = new firebase.auth.GoogleAuthProvider();
-  
+  const facebookProvider = new firebase.auth.FacebookAuthProvider();
+
   const signInWithGoogle = async () => {
     try {
       const res = await auth.signInWithPopup(googleProvider);
@@ -60,6 +61,46 @@ const firebaseConfig = {
     }
   };
   
+  const signInWithFacebook = async () => {
+    try {
+      const res = await auth.signInWithPopup(facebookProvider);
+      res.user.getIdTokenResult().then(async idTokenResult => {
+        const user = res.user;
+        const token = "Bearer "+idTokenResult.token;
+        console.log(token);
+        const response = await axios.post("https://api-dev-z2scpwkwva-uc.a.run.app/register",{
+              uid: user.uid,
+              name: user.displayName,
+              authProvider: "facebook",
+              email: user.email,
+            }, {
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token
+          },
+      })
+      console.log(response)
+      });
+      
+      // const user = res.user;
+      // const query = await db
+      //   .collection("users")
+      //   .where("uid", "==", user.uid)
+      //   .get();
+      // if (query.docs.length === 0) {
+      //   await db.collection("users").add({
+      //     uid: user.uid,
+      //     name: user.displayName,
+      //     authProvider: "google",
+      //     email: user.email,
+      //   });
+      // }
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+  };
+
   const logout = () => {
     auth.signOut();
   };
@@ -70,5 +111,6 @@ export {
     analytics,
     db,
     signInWithGoogle,
+    signInWithFacebook,
     logout,
   };
