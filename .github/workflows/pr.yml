@@ -16,4 +16,4 @@ jobs:
       - name: Install Dependencies
         run: cd client && npm i
       - name: deploy
-        run: npm run deploy
+        run: cd client && npm run deploy
