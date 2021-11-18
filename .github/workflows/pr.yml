@@ -14,4 +14,4 @@ jobs:
         with:
           node-version: '16.x'
       - name: deploy
-        run: cd client && npm i && npm run deploy
+        run: CI=false cd client && npm i && npm run deploy
