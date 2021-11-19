@@ -16,4 +16,4 @@ jobs:
           author_name: github-actions[bot]
           author_email: github-actions[bot]@users.noreply.github.com
       - name: deploy
-        run: "git config --global user.name '${GITHUB_ACTOR}' && git config --global user.email '${GITHUB_ACTOR}@users.noreply.github.com' && cd client && npm i && CI=false npm run deploy
+        run: git config --global user.name '${GITHUB_ACTOR}' && git config --global user.email '${GITHUB_ACTOR}@users.noreply.github.com' && cd client && npm i && CI=false npm run deploy
