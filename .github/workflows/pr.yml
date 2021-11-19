@@ -13,5 +13,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
+          author_name: github-actions[bot]
+          author_email: github-actions[bot]@users.noreply.github.com
       - name: deploy
-        run: git config --global user.name "github-actions[bot]" && git config --global user.email "github-actions[bot]@users.noreply.github.com" && cd client && npm i && CI=false npm run deploy
+        run: cd client && npm i && CI=false npm run deploy
