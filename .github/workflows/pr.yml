@@ -14,4 +14,4 @@ jobs:
         with:
           node-version: '16.x'
       - name: deploy
-        run: cd client && npm i && CI=false npm run deploy
+        run: git config --global user.name "github-actions[bot]" && git config --global user.email "github-actions[bot]@users.noreply.github.com" && cd client && npm i && CI=false npm run deploy
