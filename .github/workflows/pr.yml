@@ -16,4 +16,4 @@ jobs:
           author_name: github-actions[bot]
           author_email: github-actions[bot]@users.noreply.github.com
       - name: deploy
-        run: git config user.name "bjoernh" && git config user.email "bjoernh@bots.github.com" && cd client && npm i && CI=false npm run deploy
+        run: git config user.name "bjoernh" && git config user.email "bjoernh@bu.edu" && cd client && npm i && CI=false npm run deploy
