@@ -14,7 +14,7 @@ Boston Children's Hospital ALS Message Banking Project(Double dipping audio edit
 
 ### To Deploy:
 
-Push to `main` or create a PR to main to see the deployed website. CI/CD deploys to Firebase Hosting.
+Push to `main` or create a PR to main to see the deployed website. CI/CD deploys to Firebase Hosting. The frontend can be accessible at [als-message-banking.web.app/](https://als-message-banking.web.app/)right now. 
 
 ## Backend
 
@@ -31,6 +31,8 @@ Push to `main` or create a PR to main to see the deployed website. CI/CD deploys
 `python3 app.py`
 
 ### To Deploy:
+
+Backend is deployed onto GCP. After setting up an instance on GCP and authenticating through the platform, run the following commands to deply the backend API. 
 
 ```bash
 docker build -t us-docker.pkg.dev/als-message-banking/docker/api-dev:latest .
