@@ -29,3 +29,15 @@ Push to `main` or create a PR to main to see the deployed website. CI/CD deploys
 `pip3 install -r requirements.txt`
 
 `python3 app.py`
+
+### To Deploy:
+
+```bash
+docker build -t us-docker.pkg.dev/als-message-banking/docker/api-dev:latest .
+docker push us-docker.pkg.dev/als-message-banking/docker/api-dev:latest
+gcloud run deploy api-dev \
+--image=us-docker.pkg.dev/als-message-banking/docker/api-dev:latest \
+--platform=managed \
+--region=us-central1 \
+--project=als-message-banking
+```
