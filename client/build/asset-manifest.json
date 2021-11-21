@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/se-bch-als-msg-banking/static/css/main.e030bde9.chunk.css",
-    "main.js": "/se-bch-als-msg-banking/static/js/main.ea38a937.chunk.js",
-    "main.js.map": "/se-bch-als-msg-banking/static/js/main.ea38a937.chunk.js.map",
-    "runtime-main.js": "/se-bch-als-msg-banking/static/js/runtime-main.816b33b7.js",
-    "runtime-main.js.map": "/se-bch-als-msg-banking/static/js/runtime-main.816b33b7.js.map",
-    "static/css/2.d0993cff.chunk.css": "/se-bch-als-msg-banking/static/css/2.d0993cff.chunk.css",
-    "static/js/2.2fd73533.chunk.js": "/se-bch-als-msg-banking/static/js/2.2fd73533.chunk.js",
-    "static/js/2.2fd73533.chunk.js.map": "/se-bch-als-msg-banking/static/js/2.2fd73533.chunk.js.map",
-    "static/js/3.1e44f635.chunk.js": "/se-bch-als-msg-banking/static/js/3.1e44f635.chunk.js",
-    "static/js/3.1e44f635.chunk.js.map": "/se-bch-als-msg-banking/static/js/3.1e44f635.chunk.js.map",
-    "index.html": "/se-bch-als-msg-banking/index.html",
-    "static/css/2.d0993cff.chunk.css.map": "/se-bch-als-msg-banking/static/css/2.d0993cff.chunk.css.map",
-    "static/css/main.e030bde9.chunk.css.map": "/se-bch-als-msg-banking/static/css/main.e030bde9.chunk.css.map",
-    "static/js/2.2fd73533.chunk.js.LICENSE.txt": "/se-bch-als-msg-banking/static/js/2.2fd73533.chunk.js.LICENSE.txt",
-    "static/media/BCHlogo.0d2773d9.png": "/se-bch-als-msg-banking/static/media/BCHlogo.0d2773d9.png"
+    "main.css": "/static/css/main.a2bb8efe.chunk.css",
+    "main.js": "/static/js/main.ce8e92c2.chunk.js",
+    "main.js.map": "/static/js/main.ce8e92c2.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.e69f07d7.js",
+    "runtime-main.js.map": "/static/js/runtime-main.e69f07d7.js.map",
+    "static/css/2.0a9ec390.chunk.css": "/static/css/2.0a9ec390.chunk.css",
+    "static/js/2.772991b2.chunk.js": "/static/js/2.772991b2.chunk.js",
+    "static/js/2.772991b2.chunk.js.map": "/static/js/2.772991b2.chunk.js.map",
+    "static/js/3.6b27892a.chunk.js": "/static/js/3.6b27892a.chunk.js",
+    "static/js/3.6b27892a.chunk.js.map": "/static/js/3.6b27892a.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.0a9ec390.chunk.css.map": "/static/css/2.0a9ec390.chunk.css.map",
+    "static/css/main.a2bb8efe.chunk.css.map": "/static/css/main.a2bb8efe.chunk.css.map",
+    "static/js/2.772991b2.chunk.js.LICENSE.txt": "/static/js/2.772991b2.chunk.js.LICENSE.txt",
+    "static/media/BCHlogo.0d2773d9.png": "/static/media/BCHlogo.0d2773d9.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.816b33b7.js",
-    "static/css/2.d0993cff.chunk.css",
-    "static/js/2.2fd73533.chunk.js",
-    "static/css/main.e030bde9.chunk.css",
-    "static/js/main.ea38a937.chunk.js"
+    "static/js/runtime-main.e69f07d7.js",
+    "static/css/2.0a9ec390.chunk.css",
+    "static/js/2.772991b2.chunk.js",
+    "static/css/main.a2bb8efe.chunk.css",
+    "static/js/main.ce8e92c2.chunk.js"
   ]
 }

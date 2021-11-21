@@ -1,5 +1,6 @@
 # project-bch-als-msg-banking
-Boston Children's Hospital ALS Message Banking Project(Double dippign audio editor) 
+
+Boston Children's Hospital ALS Message Banking Project(Double dipping audio editor)
 
 ## Frontend
 
@@ -11,9 +12,9 @@ Boston Children's Hospital ALS Message Banking Project(Double dippign audio edit
 
 `npm start`
 
-### Deploy to github pages:
+### To Deploy:
 
-`npm run deploy`
+Push to `main` or create a PR to main to see the deployed website. CI/CD deploys to Firebase Hosting.
 
 ## Backend
 
@@ -28,9 +29,3 @@ Boston Children's Hospital ALS Message Banking Project(Double dippign audio edit
 `pip3 install -r requirements.txt`
 
 `python3 app.py`
-
-### Deploy to Google Cloud
-
-make sure to create instance on GCP
-
-``
