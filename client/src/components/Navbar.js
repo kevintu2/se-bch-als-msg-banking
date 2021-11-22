@@ -26,7 +26,7 @@ function MainNav() {
     if (user) {
       button = <Nav className="ml-auto"><Nav.Link onClick={logout} className="login-item">Log Out</Nav.Link></Nav>
     } else {
-      button = <Nav className="ml-auto"><Nav.Link href="/se-bch-als-msg-banking/login" className="login-item">Log In</Nav.Link></Nav>
+      button = <Nav className="ml-auto"><Nav.Link href={process.env.PUBLIC_URL+"/login"} className="login-item">Log In</Nav.Link></Nav>
     }
     return (
         <>
