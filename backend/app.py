@@ -20,6 +20,7 @@ CORS(app)
 # Initialize Firestore DB
 db = firestore.Client()
 users_collection = db.collection('users')
+user_ref = None
 
 # Initialize Cloud Storage
 #CLOUD_STORAGE_BUCKET = os.environ.get('CLOUD_STORAGE_BUCKET')
@@ -138,11 +139,14 @@ def upload_audio():
     fileName = request.json['fileName']
 
     blob.upload_from_filename(fileName)
-
+    data = user_ref.get()
+    if data.audio:
+        user_ref.set(data.audio.append(destination_file_name), merge=True)
+    else:
+        user_ref.set([destination_file_name])
     return "File {} uploaded to {}.".format(
         fileName, destination_file_name
     )
-
 
 @app.route('/retrieve_audio', methods=['GET'])
 def retrieve_audio():
@@ -150,7 +154,7 @@ def retrieve_audio():
     destination_file_name = "download.wav"
     blob = bucket.blob(fileName)
     blob.download_to_filename(destination_file_name)
-
+    
     return "Downloaded storage object {} from bucket {} to local file {}.".format(
         fileName, CLOUD_STORAGE_BUCKET_NAME, destination_file_name
     )

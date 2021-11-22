@@ -1,5 +1,6 @@
 # project-bch-als-msg-banking
-Boston Children's Hospital ALS Message Banking Project(Double dippign audio editor) 
+
+Boston Children's Hospital ALS Message Banking Project(Double dipping audio editor)
 
 ## Frontend
 
@@ -11,9 +12,9 @@ Boston Children's Hospital ALS Message Banking Project(Double dippign audio edit
 
 `npm start`
 
-### Deploy to github pages:
+### To Deploy:
 
-`npm run deploy`
+Push to `main` or create a PR to main to see the deployed website. CI/CD deploys to Firebase Hosting. The frontend can be accessible at [als-message-banking.web.app/](https://als-message-banking.web.app/)right now. 
 
 ## Backend
 
@@ -29,8 +30,16 @@ Boston Children's Hospital ALS Message Banking Project(Double dippign audio edit
 
 `python3 app.py`
 
-### Deploy to Google Cloud
+### To Deploy:
 
-make sure to create instance on GCP
+Backend is deployed onto GCP. After setting up an instance on GCP and authenticating through the platform, run the following commands to deply the backend API. 
 
-``
+```bash
+docker build -t us-docker.pkg.dev/als-message-banking/docker/api-dev:latest .
+docker push us-docker.pkg.dev/als-message-banking/docker/api-dev:latest
+gcloud run deploy api-dev \
+--image=us-docker.pkg.dev/als-message-banking/docker/api-dev:latest \
+--platform=managed \
+--region=us-central1 \
+--project=als-message-banking
+```
