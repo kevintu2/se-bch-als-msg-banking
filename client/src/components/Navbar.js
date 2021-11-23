@@ -35,7 +35,7 @@ function MainNav() {
               <Container>
                   <Navbar.Brand href="https://www.childrenshospital.org/" style={{color:'#1b4079'}}>
                   <Image src={BCHlogo} alt="Logo"/>
-                  ALS Message Ediging
+                  ALS Message Editing
                   </Navbar.Brand>
                   <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Nav className="me-auto">

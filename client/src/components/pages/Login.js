@@ -20,7 +20,7 @@ function Login() {
     <>
     <div>
       <h1 className="login-header text-center">
-        Login to use ALS Message Banking services
+        Login to use ALS Message Editing services
       </h1>
     </div>
     <div className="login">
