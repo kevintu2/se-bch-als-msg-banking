@@ -21,6 +21,51 @@ const firebaseConfig = {
   const googleProvider = new firebase.auth.GoogleAuthProvider();
   const facebookProvider = new firebase.auth.FacebookAuthProvider();
 
+  const signInWithEmailAndPassword = async (email, password) => {
+    try {
+      await auth.signInWithEmailAndPassword(email, password);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+  };
+
+  const registerWithEmailAndPassword = async (name, email, password) => {
+    try {
+      const res = await auth.createUserWithEmailAndPassword(email, password);
+      res.user.getIdTokenResult().then(async idTokenResult => {
+        const user = res.user;
+        const token = "Bearer "+idTokenResult.token;
+        console.log(token);
+        const response = await axios.post("https://api-dev-z2scpwkwva-uc.a.run.app/register",{
+              uid: user.uid,
+              name: name,
+              authProvider: "email",
+              email: user.email,
+            }, {
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': token
+          },
+      })
+      console.log(response)
+      });
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+  };  
+
+  const sendPasswordResetEmail = async (email) => {
+    try {
+      await auth.sendPasswordResetEmail(email);
+      alert("Password reset link sent!");
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    }
+  };
+
   const signInWithGoogle = async () => {
     try {
       const res = await auth.signInWithPopup(googleProvider);
@@ -112,5 +157,8 @@ export {
     db,
     signInWithGoogle,
     signInWithFacebook,
+    signInWithEmailAndPassword,
+    registerWithEmailAndPassword,
+    sendPasswordResetEmail,
     logout,
   };
