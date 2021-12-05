@@ -17,8 +17,11 @@ from pyasn1.type.univ import Null
 HTTP_REQUEST = google.auth.transport.requests.Request()
 
 # Initialize Flask app
+from flask import Flask
+from flask_cors import CORS, cross_origin
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 # Initialize Firestore DB
 db = firestore.Client()

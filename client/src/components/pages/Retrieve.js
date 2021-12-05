@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router";
 import { auth, db, logout } from "../firebase";
+import axios from "axios";
 
 import {Button} from 'react-bootstrap';
 
@@ -17,10 +18,11 @@ function Retrieve() {
             .get();
           const data = await query.docs[0].data();
           if ("audio" in data){
-            setAudio( data.audio);
+            // console.log(typeoaudio.concat(data.audio));
+            setAudio( audio.concat(data.audio));
           }
           else{
-            setAudio(audio => [])
+            setAudio([])
           }
         } catch (err) {
           console.error(err);
@@ -32,12 +34,28 @@ function Retrieve() {
         if (!user) return history.replace(process.env.PUBLIC_URL +"/");
         fetchUserAudio();
       },[loading]);
-      console.log(audio[0])
-     if (audio.length >0){
-      var audioList = audio.map(clip =>{
-            return <li key="{clip}">{clip.key}</li>;
+      const downloadClip = async (name) => {
+        try {
+          const response = await axios.post(
+            "https://api-dev-z2scpwkwva-uc.a.run.app/retrieve_audio",
+            {
+              fileName: name,
+            }
+          );
+          window.open(response.data);
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      var audioList = audio.map( value => {
+            const res = Object.entries(value);
+            console.log(res)
+            return (
+              <button key="{res}" onClick={() => downloadClip(res[0][1])}>
+                {res[0][0]}
+              </button>
+            );
           })
-    }
     return (
         <>
         <h1 className="dashboard-header text-center">
@@ -47,12 +65,7 @@ function Retrieve() {
             Click to download your voice!
         </h2>
         <br/>
-        {audio ? audio.map(clip =>
-             <li key="{clip}">{clip}</li>
-          ): 'Loading...'}
-        {/* {audio.length > 0 &&
-        <ul>{audioList}</ul> */}
-{/* } */}
+       {audioList}
         </>
     )
 
