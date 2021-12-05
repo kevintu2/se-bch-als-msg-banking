@@ -4,6 +4,7 @@ import Home from "./components/pages/Home";
 import Upload from "./components/pages/Upload";
 import Dashboard from "./components/pages/Dashboard";
 import Login from "./components/pages/Login";
+import Retrieve from './components/pages/Retrieve';
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -23,6 +24,7 @@ function App() {
         <Switch>
             <Route exact path={process.env.PUBLIC_URL + "/"} component={Home} />
             <Route path={process.env.PUBLIC_URL + "/upload"} component={Upload} />
+            <Route path={process.env.PUBLIC_URL + "/retrieve"} component={Retrieve} />
             <Route path={process.env.PUBLIC_URL + "/dashboard"} component={Dashboard} />
             <Route path={process.env.PUBLIC_URL + "/login"} component={Login} />
           </Switch>

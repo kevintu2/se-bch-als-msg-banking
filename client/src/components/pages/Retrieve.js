@@ -4,20 +4,24 @@ import { useHistory } from "react-router";
 import { auth, db, logout } from "../firebase";
 
 import {Button} from 'react-bootstrap';
-import './Dashboard.css'
 
-function Dashboard() {
+function Retrieve() {
     const [user, loading, error] = useAuthState(auth);
-    const [name, setName] = useState("");
+    const [audio, setAudio] = useState([]);
     const history = useHistory();
-    const fetchUserName = async () => {
+    const fetchUserAudio = async () => {
         try {
           const query = await db
             .collection("users")
             .where("uid", "==", user?.uid)
             .get();
           const data = await query.docs[0].data();
-          setName(data.name);
+          if ("audio" in data){
+            setAudio( data.audio);
+          }
+          else{
+            setAudio(audio => [])
+          }
         } catch (err) {
           console.error(err);
           alert("An error occured while fetching user data");
@@ -26,32 +30,32 @@ function Dashboard() {
       useEffect(() => {
         if (loading) return;
         if (!user) return history.replace(process.env.PUBLIC_URL +"/");
-        fetchUserName();
-      }, [user, loading]);
+        fetchUserAudio();
+      },[loading]);
+      console.log(audio[0])
+     if (audio.length >0){
+      var audioList = audio.map(clip =>{
+            return <li key="{clip}">{clip.key}</li>;
+          })
+    }
     return (
         <>
         <h1 className="dashboard-header text-center">
             Rediscover your voice
         </h1>
         <h2 className="dashboard-header text-center">
-            ALS Voice Editing
+            Click to download your voice!
         </h2>
         <br/>
-        <div class="col-md-12 text-center">
-            <Button className="align-center" href={process.env.PUBLIC_URL + "/Upload"}>Upload your audio</Button>
-            <br/>
-            <Button className="align-center mt-2" href={process.env.PUBLIC_URL + "/retrieve"}>Retrieve your audio</Button>
-            <br/>
-            Logged in as
-            <div>{name}</div>
-            <div>{user?.email}</div>
-            <Button onClick={logout}>
-            Logout
-            </Button>
-        </div>
+        {audio ? audio.map(clip =>
+             <li key="{clip}">{clip}</li>
+          ): 'Loading...'}
+        {/* {audio.length > 0 &&
+        <ul>{audioList}</ul> */}
+{/* } */}
         </>
     )
 
 }
 
-export default Dashboard;
+export default Retrieve;
