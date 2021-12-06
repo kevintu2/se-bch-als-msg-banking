@@ -39,14 +39,15 @@ function Dashboard() {
         <br/>
         <div class="col-md-12 text-center">
             <Button className="align-center" href={process.env.PUBLIC_URL + "/Upload"}>Upload your audio</Button>
-            <div>
+            <br/>
+            <Button className="align-center mt-2" href={process.env.PUBLIC_URL + "/retrieve"}>Retrieve your audio</Button>
+            <br/>
             Logged in as
             <div>{name}</div>
             <div>{user?.email}</div>
             <Button onClick={logout}>
             Logout
             </Button>
-        </div>
         </div>
         </>
     )
