@@ -47,15 +47,13 @@ function Retrieve() {
     const res = Object.entries(value);
     console.log(res);
     return (
-      <li>
-        <button
-          className="align-center mt-2"
-          key="{res}"
-          onClick={() => downloadClip(res[0][1])}
-        >
-          {res[0][0]}
-        </button>
-      </li>
+      <button
+        className="align-center mt-2"
+        key="{res}"
+        onClick={() => downloadClip(res[0][1])}
+      >
+        {res[0][0]}
+      </button>
     );
   });
   return (
@@ -63,9 +61,7 @@ function Retrieve() {
       <h1 className="dashboard-header text-center">Rediscover Your Voice</h1>
       <h2 className="dashboard-header text-center">Click to Download!</h2>
       <br />
-      <div class="col-md-12 text-center">
-        <ul>{audioList}</ul>
-      </div>
+      <div class="col-md-12 text-center">{audioList}</div>
     </>
   );
 }

@@ -5,9 +5,18 @@ Boston Children's Hospital ALS Message Banking Project (Double Dipping Audio Edi
 Speech impairment is common in patients with ALS. The ALS Message Banking Project aims to preserve their voice and assist them with their needs.
 The platform allows the user to login to their own dashboard where they can upload and retrieve audio files securely. The ultimate goal is to have these audio files processed and filtered automatically to enhance their sound quality and be able to reuse parts of the audio clips to produce a new "voice" for the user.
 
-## Technical Archtecture
+## Technical Architecture
 
-![arch](arch.png)
+![Architecture Diagram](arch.png)
+
+- Frontend:
+  - React.js
+- Backend:
+  - Flask Python
+  - Cloud Functions to process audio clips
+- Database:
+  - Firestore to store user information
+  - Google Cloud Storage for audio files
 
 ## Frontend
 
