@@ -16,8 +16,10 @@ function Dashboard() {
         .collection("users")
         .where("uid", "==", user?.uid)
         .get();
-      const data = await query.docs[0].data();
-      setName(data.name);
+      if (query.docs.length > 0) {
+        const data = await query.docs[0].data();
+        setName(data.name);
+      }
     } catch (err) {
       console.error(err);
       alert("An error occured while fetching user data");
