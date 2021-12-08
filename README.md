@@ -1,38 +1,40 @@
 # project-bch-als-msg-banking
 
-Boston Children's Hospital ALS Message Banking Project(Double dipping audio editor)
+Boston Children's Hospital ALS Message Banking Project (Double Dipping Audio Editor)
+Patience with ALS
+The platform allows the user to create account and login to their own dashboard, where they can upload audio files and retrieve audio files
+securly. The overarching goal will be to have these audio files be processed and filtered to enhance the sound quality and be able to parts of the audio clips to produce new "voice" for the user.
 
 ## Frontend
 
 `cd client`
 
-### Run locally:
+### Run Frontend Locally
 
 `npm install`
 
 `npm start`
 
-### To Deploy:
+### To Deploy Frontend
 
-Push to `main` or create a PR to main to see the deployed website. CI/CD deploys to Firebase Hosting. The frontend can be accessible at [als-message-banking.web.app/](https://als-message-banking.web.app/)right now. 
+Push to `main` or create a PR to main to see the deployed website. CI/CD deploys to Firebase Hosting. The frontend is accessible at [als-message-banking.web.app/](https://als-message-banking.web.app/)right now.
 
 ## Backend
 
 `cd backend`
 
-### Run locally
+### Run Backend Locally
 
-`python3 -m venv env`
+- Setup GOOGLE_APPLICATION_CREDENTIALS as described here - <https://cloud.google.com/docs/authentication/getting-started>
 
-`source env/bin/activate`
+```bash
+docker build -t als-backend .
+docker run als-backend
+```
 
-`pip3 install -r requirements.txt`
+### To Deploy Backend
 
-`python3 app.py`
-
-### To Deploy:
-
-Backend is deployed onto GCP. After setting up an instance on GCP and authenticating through the platform, run the following commands to deply the backend API. 
+Backend is deployed to GCP. After authenticating docker to push to the private docker repository, run the following commands to deploy the API.
 
 ```bash
 docker build -t us-docker.pkg.dev/als-message-banking/docker/api-dev:latest .
