@@ -33,6 +33,8 @@ storage_client = storage.Client.from_service_account_json(
     'serviceaccount.json')
 bucket = storage_client.get_bucket(CLOUD_STORAGE_BUCKET_NAME)
 
+# Helper function to check the user's token
+
 
 def check_token(f):
     @wraps(f)
@@ -47,6 +49,8 @@ def check_token(f):
             return 'Unauthorized', 401
         return f(*args, **kwargs)
     return wrap
+
+# Register a new user
 
 
 @app.route('/register', methods=['POST'])
@@ -66,11 +70,15 @@ def register():
     user_ref.set(data)
     return {'message': 'User created successfully'}, 200
 
+# "Login" a user
+
 
 @app.route('/login', methods=['GET'])
 @check_token
 def login():
     return {'message': 'Successfully logged in'}, 200
+
+# Upload Audio
 
 
 @app.route('/upload_audio', methods=['POST'])
@@ -102,6 +110,8 @@ def upload_audio():
     return "File {} uploaded to {}.".format(
         fileName, destination_file_name
     )
+
+# Get Audio
 
 
 @app.route('/retrieve_audio', methods=['POST'])

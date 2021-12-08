@@ -20,7 +20,6 @@ function Dashboard() {
       setName(data.name);
     } catch (err) {
       console.error(err);
-      alert("An error occured while fetching user data");
     }
   };
   useEffect(() => {
@@ -30,7 +29,7 @@ function Dashboard() {
   }, [user, loading]);
   return (
     <>
-      <h1 className="dashboard-header text-center">Rediscover your voice</h1>
+      <h1 className="dashboard-header text-center">Rediscover Your Voice</h1>
       <h2 className="dashboard-header text-center">ALS Voice Editing</h2>
       <br />
       <div class="col-md-12 text-center">
