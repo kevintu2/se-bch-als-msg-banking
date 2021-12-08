@@ -22,9 +22,7 @@ function Register() {
   return (
     <>
       <div>
-        <h1 className="login-header text-center">
-          Register to use ALS Message Editing services
-        </h1>
+        <h1 className="login-header text-center">Register</h1>
       </div>
       <div className="register">
         <div className="register__container">

@@ -24,9 +24,7 @@ function Login() {
   return (
     <>
       <div>
-        <h1 className="login-header text-center">
-          Login to use ALS Message Editing services
-        </h1>
+        <h1 className="login-header text-center">Login</h1>
       </div>
       <div className="login">
         <div className="login__container">
@@ -67,8 +65,8 @@ function Login() {
             <Link to={process.env.PUBLIC_URL + "/reset"}>Forgot Password</Link>
           </div>
           <div>
-            Don't have an account?{" "}
-            <Link to={process.env.PUBLIC_URL + "/register"}>Register</Link> now.
+            Don't have an account? Click here to{" "}
+            <Link to={process.env.PUBLIC_URL + "/register"}>Register</Link>
           </div>
         </div>
       </div>

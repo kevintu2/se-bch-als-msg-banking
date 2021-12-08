@@ -60,10 +60,8 @@ function Retrieve() {
   });
   return (
     <>
-      <h1 className="dashboard-header text-center">Rediscover your voice</h1>
-      <h2 className="dashboard-header text-center">
-        Click to download your voice!
-      </h2>
+      <h1 className="dashboard-header text-center">Rediscover Your Voice</h1>
+      <h2 className="dashboard-header text-center">Click to Download!</h2>
       <br />
       <div class="col-md-12 text-center">
         <ul>{audioList}</ul>

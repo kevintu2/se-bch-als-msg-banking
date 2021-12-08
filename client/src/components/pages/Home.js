@@ -16,7 +16,7 @@ function Home() {
   }, [user, loading]);
   return (
     <>
-      <h1 className="home-header text-center">Rediscover your voice</h1>
+      <h1 className="home-header text-center">Rediscover Your Voice</h1>
       <h2 className="home-header text-center">ALS Voice Editing</h2>
     </>
   );

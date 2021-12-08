@@ -1,9 +1,12 @@
 # project-bch-als-msg-banking
 
 Boston Children's Hospital ALS Message Banking Project (Double Dipping Audio Editor)
-Patience with ALS
+
+Speech impairment is common with patience with ALS diease. ALS Message Banking Project aims preserve their voice and assisst them with their needs.
 The platform allows the user to create account and login to their own dashboard, where they can upload audio files and retrieve audio files
-securly. The overarching goal will be to have these audio files be processed and filtered to enhance the sound quality and be able to parts of the audio clips to produce new "voice" for the user.
+securly. The overarching goal will be to have these audio files be processed and filtered to enhance the sound quality and be able to reuse parts of the audio clips to produce new "voice" for the user.
+
+## Technical Archtecture
 
 ## Frontend
 
