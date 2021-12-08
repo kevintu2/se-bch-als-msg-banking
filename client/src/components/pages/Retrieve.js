@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router";
-import { auth, db, logout } from "../firebase";
+import { auth, db } from "../firebase";
 import axios from "axios";
 
-import { Button } from "react-bootstrap";
-
 function Retrieve() {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [audio, setAudio] = useState([]);
   const history = useHistory();
   const fetchUserAudio = async () => {
@@ -50,7 +48,11 @@ function Retrieve() {
     console.log(res);
     return (
       <li>
-        <button className="align-center mt-2" key="{res}" onClick={() => downloadClip(res[0][1])}>
+        <button
+          className="align-center mt-2"
+          key="{res}"
+          onClick={() => downloadClip(res[0][1])}
+        >
           {res[0][0]}
         </button>
       </li>
@@ -64,7 +66,7 @@ function Retrieve() {
       </h2>
       <br />
       <div class="col-md-12 text-center">
-      <ul>{audioList}</ul>
+        <ul>{audioList}</ul>
       </div>
     </>
   );

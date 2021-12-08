@@ -1,6 +1,8 @@
 # app.py
 
 # Required imports
+from flask_cors import CORS, cross_origin
+from flask import Flask
 import uuid
 from google.cloud import storage
 import os
@@ -17,8 +19,6 @@ from pyasn1.type.univ import Null
 HTTP_REQUEST = google.auth.transport.requests.Request()
 
 # Initialize Flask app
-from flask import Flask
-from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -26,10 +26,8 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 # Initialize Firestore DB
 db = firestore.Client()
 users_collection = db.collection('users')
-user = None
 
 # Initialize Cloud Storage
-#CLOUD_STORAGE_BUCKET = os.environ.get('CLOUD_STORAGE_BUCKET')
 CLOUD_STORAGE_BUCKET_NAME = "als-audio-bucket"
 storage_client = storage.Client.from_service_account_json(
     'serviceaccount.json')
@@ -79,7 +77,6 @@ def login():
 @check_token
 def upload_audio():
     destination_file_name = f'Audio{uuid.uuid1()}.wav'
-    # print('request.files', request.files)
     file = request.files['file']
     fileName = file.name
     print(file)
@@ -117,20 +114,8 @@ def retrieve_audio():
                                    expiration=datetime.timedelta(minutes=30),
                                    # Allow GET requests using this URL.
                                    method="GET",)
-    # blob.download_to_filename(destination_file_name)
     print("Generated GET signed URL:")
     return url
-
-
-@app.route('/display_audio', methods=['GET'])
-def display_audio():
-    data = user_ref.get()
-    print("Grabbed User audios")
-    if data.audio:
-        #format is [{userFileName:blobStoreFileName}]
-        return data.audio
-    else:
-        return []
 
 
 port = int(os.environ.get('PORT', 8080))

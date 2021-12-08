@@ -1,12 +1,12 @@
 import { Form } from "react-bootstrap";
-import { auth, logout } from "../firebase";
+import { auth } from "../firebase";
 import { useHistory } from "react-router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import React, { useEffect } from "react";
 import axios from "axios";
 
 function Upload() {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [file, setFile] = React.useState();
   const [title, setTitle] = React.useState();
   const history = useHistory();
