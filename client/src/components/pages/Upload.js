@@ -8,7 +8,7 @@ import axios from "axios";
 function Upload() {
   const [user, loading] = useAuthState(auth);
   const [file, setFile] = React.useState();
-  const [title, setTitle] = React.useState();
+  const [title] = React.useState();
   const history = useHistory();
   useEffect(() => {
     if (loading) {
@@ -25,13 +25,14 @@ function Upload() {
     console.log(file);
     const token = await auth.currentUser.getIdToken();
     axios
-      .post("https://api-dev-z2scpwkwva-uc.a.run.app/upload_audio", formData, {
+      .post("http://localhost:8080/upload_audio", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: token,
         },
       })
       .then((response) => {
+        alert("Uploaded Successfully");
         console.log(response);
       })
       .catch((error) => {
@@ -45,13 +46,6 @@ function Upload() {
       <Form enctype="multipart/form-data">
         <Form.Group controlId="formFile" class="col-lg-6 offset-lg-3">
           <div className="row justify-content-center">
-            <Form.Label>Label your File</Form.Label>
-            <Form.Control
-              type="input"
-              style={{ width: "50%" }}
-              name="title"
-              onChange={(e) => setTitle(e.target.value)}
-            ></Form.Control>
             <Form.Label>Upload your data</Form.Label>
             <Form.Control
               type="file"

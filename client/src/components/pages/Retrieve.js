@@ -47,13 +47,16 @@ function Retrieve() {
     const res = Object.entries(value);
     console.log(res);
     return (
-      <button
-        className="align-center mt-2"
-        key="{res}"
-        onClick={() => downloadClip(res[0][1])}
-      >
-        {res[0][0]}
-      </button>
+      <div>
+        <button
+          className="align-center mt-2"
+          key="{res}"
+          onClick={() => downloadClip(res[0][1])}
+        >
+          {res[0][0]}
+        </button>
+        <br />
+      </div>
     );
   });
   return (

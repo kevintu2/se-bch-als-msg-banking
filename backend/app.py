@@ -86,8 +86,7 @@ def login():
 def upload_audio():
     destination_file_name = f'Audio{uuid.uuid1()}.wav'
     file = request.files['file']
-    fileName = file.name
-    print(file)
+    fileName = file.filename
     blob = bucket.blob(destination_file_name)
 
     blob.upload_from_string(file.read(), content_type=file.content_type)
@@ -99,7 +98,6 @@ def upload_audio():
     doc = user_ref.get()
     if doc.exists:
         doc = doc.to_dict()
-        print(doc)
         if "audio" in doc:
             doc["audio"].append({fileName: destination_file_name})
             user_ref.update({"audio": doc["audio"]})

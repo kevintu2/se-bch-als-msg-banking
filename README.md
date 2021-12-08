@@ -18,6 +18,10 @@ The platform allows the user to login to their own dashboard where they can uplo
   - Firestore to store user information
   - Google Cloud Storage for audio files
 
+## Running the Application
+
+Follow the steps below to start the application
+
 ## Frontend
 
 `cd client`
@@ -58,3 +62,16 @@ gcloud run deploy api-dev \
 --region=us-central1 \
 --project=als-message-banking
 ```
+
+## Known Bugs and Future Steps
+
+### Issues
+
+[Click Here](https://github.com/BU-Spark/se-bch-als-msg-banking/issues) to view the list of bugs and feature suggestions.
+
+### Next Step - Enhance Audio Processing Features
+
+- Further develop the audio processing script to accommodate for slur and unclear subject voice
+  - Develop different filters to process voice clips
+    - Setup Admins with the ability to edit voice clips
+- Synthesize voice clips
