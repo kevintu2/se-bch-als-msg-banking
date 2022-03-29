@@ -88,7 +88,7 @@ def upload_audio():
     file = request.files['file']
     fileName = file.filename
     blob = bucket.blob(destination_file_name)
-
+    
     blob.upload_from_string(file.read(), content_type=file.content_type)
     auth_header = request.headers['Authorization']
     idtoken = auth_header.split(' ').pop()
