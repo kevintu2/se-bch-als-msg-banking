@@ -13,6 +13,7 @@ from google.cloud import firestore
 import google.auth.transport.requests
 from google.oauth2 import id_token
 from functools import wraps
+from audio import deadSpace
 
 from pyasn1.type.univ import Null
 
@@ -88,6 +89,8 @@ def upload_audio():
     file = request.files['file']
     fileName = file.filename
     blob = bucket.blob(destination_file_name)
+
+    deadSpace(file)
 
     blob.upload_from_string(file.read(), content_type=file.content_type)
     auth_header = request.headers['Authorization']
