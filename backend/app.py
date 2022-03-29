@@ -28,10 +28,11 @@ db = firestore.Client()
 users_collection = db.collection('users')
 
 # Initialize Cloud Storage
-CLOUD_STORAGE_BUCKET_NAME = "als-audio-bucket"
+CLOUD_STORAGE_BUCKET_NAME = "als-audio-bucket3"
 storage_client = storage.Client.from_service_account_json(
     'serviceaccount.json')
 bucket = storage_client.get_bucket(CLOUD_STORAGE_BUCKET_NAME)
+
 
 # Helper function to check the user's token
 
