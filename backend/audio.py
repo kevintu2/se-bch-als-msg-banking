@@ -1,4 +1,5 @@
-# code in file pulled from: https://github.com/wiseman/py-webrtcvad/blob/master/example.py
+# audio.py - contains audio processing functions
+# code in file partially pulled from: https://github.com/wiseman/py-webrtcvad/blob/master/example.py
 
 import collections
 import contextlib
@@ -8,7 +9,10 @@ import wave
 import vadfuncs
 from pydub import AudioSegment
 
-def main(args):
+
+def deadSpace(args):
+    "Takes .wav file path, and returns voiced audio segment from file."
+
     if len(args) != 2:
         sys.stderr.write(
             'Usage: example.py <aggressiveness> <path to wav file>\n')
@@ -30,7 +34,7 @@ def main(args):
 
     # Writes voice audio chunks
     for i, segment in enumerate(segments):
-        path = 'chunk-%002d.wav' % (i)
+        path = 'chunk-%002d.WAV' % (i)
         chunkPaths.append(path)
         print(' Writing %s' % (path))
         vadfuncs.write_wave(path, segment, sample_rate)
@@ -42,7 +46,19 @@ def main(args):
         for n in range(1, len(chunkPaths)):
             onlyVoice = onlyVoice + AudioSegment.from_wav(chunkPaths[n])
 
-    onlyVoice.export('chunksTogether.wav', format='wav')
+    chunkedFile = 'chunksTogether.WAV'
+
+    onlyVoice.export(chunkedFile, format='wav')
+
+    return chunkedFile
+
+
+def processAudio(args):
+    "Takes .wav file path, runs file through audio processors, and returns processed file path"
+
+    voiceAudio = deadSpace(args)
+
+    return ''
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    processAudio(sys.argv[1:])
