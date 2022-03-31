@@ -17,7 +17,7 @@ def main(args):
     sample_rate = 48000
 
     # Preparation of wav file for vad function
-    pySeg = AudioSegment.from_file(args[1]).set_channels(1).set_frame_rate(sample_rate).export('editedFile.WAV', format='wav')
+    pySeg = AudioSegment.from_wav(args[1]).set_channels(1).set_frame_rate(sample_rate).export('editedFile.WAV', format='wav')
 
     audio = vadfuncs.read_wave('editedFile.WAV')
 
@@ -26,11 +26,23 @@ def main(args):
     frames = list(frames)
     segments = vadfuncs.vad_collector(sample_rate, 30, 300, vad, frames)
 
-    for i, segment in enumerate(segments):
-        path = 'chunk-%002d.wav' % (i,)
-        print(' Writing %s' % (path,))
-        vadfuncs.write_wave(path, segment, sample_rate)
+    chunkPaths = []
 
+    # Writes voice audio chunks
+    for i, segment in enumerate(segments):
+        path = 'chunk-%002d.wav' % (i)
+        chunkPaths.append(path)
+        print(' Writing %s' % (path))
+        vadfuncs.write_wave(path, segment, sample_rate)
+    
+    onlyVoice = AudioSegment.from_wav(chunkPaths[0])
+
+    # Merges chunks into single file
+    if len(chunkPaths) > 1:
+        for n in range(1, len(chunkPaths)):
+            onlyVoice = onlyVoice + AudioSegment.from_wav(chunkPaths[n])
+
+    onlyVoice.export('chunksTogether.wav', format='wav')
 
 if __name__ == '__main__':
     main(sys.argv[1:])
