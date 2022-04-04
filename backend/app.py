@@ -95,7 +95,15 @@ def upload_audio():
     # tmp folder for processing
     file_path = '/tmp/' + str(fileName)
     blob.download_to_filename(file_path)
-    processedF = processAudio(file_path)
+    processedFilePath = processAudio(file_path)
+
+    # uploading processed audio to new blob
+    dest_processed_file = f'Audio{uuid.uuid1()}.wav'
+    processedFileName = processedFilePath.split('/tmp/')[1]
+    blob = bucket.blob(dest_processed_name)
+
+    blob.upload_from_filename(processedFileName, content_type='audio/wav')
+
 
     print('something', flush = True)
 
@@ -108,14 +116,14 @@ def upload_audio():
     if doc.exists:
         doc = doc.to_dict()
         if "audio" in doc:
-            doc["audio"].append({fileName: destination_file_name})
+            doc["audio"].append({processedFileName: dest_processed_file})
             user_ref.update({"audio": doc["audio"]})
         else:
-            user_ref.update({"audio": [{fileName: destination_file_name}]})
+            user_ref.update({"audio": [{processedFileName: dest_processed_file}]})
     else:
         print(u'No such document!')
     return "File {} uploaded to {}.".format(
-        fileName, destination_file_name
+        processedFileName, dest_processed_file
     )
 
 # Get Audio

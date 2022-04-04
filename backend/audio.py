@@ -5,6 +5,7 @@ import collections
 import contextlib
 import sys
 import wave
+import re
 
 import vadfuncs
 from pydub import AudioSegment
@@ -15,20 +16,18 @@ def backgNoise(args):
 
 
 def deadSpace(filePath):
-    # "Takes .wav file path, and returns voiced audio segment from file."
+    "Takes .wav file path, and returns voiced audio segment from file."
     print("in deadspace function", flush=True)
-
-    # if len(args) != 2:
-    #     sys.stderr.write(
-    #         'Usage: example.py <aggressiveness> <path to wav file>\n')
-    #     sys.exit(1)
     
     sample_rate = 48000
 
-    # # Preparation of wav file for vad function
-    pySeg = AudioSegment.from_wav(filePath).set_channels(1).set_frame_rate(sample_rate).export('/tmp/editedFile.WAV', format='wav')
+    prepPath = '/tmp/' + re.split('.wav|.WAV', (filePath.split('/tmp/')[1]))[0] + 'Edited.WAV'
+    print(prepPath, flush=True)
 
-    audio = vadfuncs.read_wave('/tmp/editedFile.WAV')
+    # Preparation of wav file for vad function
+    pySeg = AudioSegment.from_wav(filePath).set_channels(1).set_frame_rate(sample_rate).export(prepPath, format='wav')
+
+    audio = vadfuncs.read_wave(prepPath)
 
     vad = vadfuncs.webrtcvad.Vad(3)
     frames = vadfuncs.frame_generator(30, audio[0], sample_rate)
@@ -39,7 +38,7 @@ def deadSpace(filePath):
 
     # Writes voice audio chunks
     for i, segment in enumerate(segments):
-        path = '/tmp/chunk-%002d.WAV' % (i)
+        path = prepPath.split('.WAV')[0] + 'chunk-'+ str(i) + '.WAV'
         chunkPaths.append(path)
         print(' Writing %s' % (path))
         vadfuncs.write_wave(path, segment, sample_rate)
@@ -51,7 +50,8 @@ def deadSpace(filePath):
         for n in range(1, len(chunkPaths)):
             onlyVoice = onlyVoice + AudioSegment.from_wav(chunkPaths[n])
 
-    chunkedFile = '/tmp/chunksTogether.WAV'
+    chunkedFile = prepPath.split('.WAV')[0] + 'chunks.WAV'
+    print(chunkedFile, flush=True)
 
     onlyVoice.export(chunkedFile, format='wav')
 
@@ -66,4 +66,4 @@ def processAudio(filePath):
     return voiceAudio
 
 if __name__ == '__main__':
-    processAudio(sys.argv[1:])
+    processAudio(sys.argv[1])
