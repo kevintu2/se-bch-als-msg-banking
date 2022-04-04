@@ -5,27 +5,30 @@ import collections
 import contextlib
 import sys
 import wave
+import re
 
 import vadfuncs
 from pydub import AudioSegment
 
 
-def deadSpace(args):
-    "Takes .wav file path, and returns voiced audio segment from file."
+def backgNoise(args):
+    return
 
-    if len(args) != 2:
-        sys.stderr.write(
-            'Usage: example.py <aggressiveness> <path to wav file>\n')
-        sys.exit(1)
+
+def deadSpace(filePath):
+    "Takes .wav file path, and returns voiced audio segment from file."
     
     sample_rate = 48000
 
+    prepPath = '/tmp/' + re.split('.wav|.WAV', (filePath.split('/tmp/')[1]))[0] + 'Edited.WAV'
+
     # Preparation of wav file for vad function
-    pySeg = AudioSegment.from_wav(args[1]).set_channels(1).set_frame_rate(sample_rate).export('editedFile.WAV', format='wav')
+    pySeg = AudioSegment.from_wav(filePath).set_channels(1).set_frame_rate(sample_rate).export(prepPath, format='wav')
 
-    audio = vadfuncs.read_wave('editedFile.WAV')
+    audio = vadfuncs.read_wave(prepPath)
 
-    vad = vadfuncs.webrtcvad.Vad(int(args[0]))
+    # finds voiced audio segments
+    vad = vadfuncs.webrtcvad.Vad(3)
     frames = vadfuncs.frame_generator(30, audio[0], sample_rate)
     frames = list(frames)
     segments = vadfuncs.vad_collector(sample_rate, 30, 300, vad, frames)
@@ -34,7 +37,7 @@ def deadSpace(args):
 
     # Writes voice audio chunks
     for i, segment in enumerate(segments):
-        path = 'chunk-%002d.WAV' % (i)
+        path = prepPath.split('.WAV')[0] + 'chunk-'+ str(i) + '.WAV'
         chunkPaths.append(path)
         print(' Writing %s' % (path))
         vadfuncs.write_wave(path, segment, sample_rate)
@@ -46,19 +49,19 @@ def deadSpace(args):
         for n in range(1, len(chunkPaths)):
             onlyVoice = onlyVoice + AudioSegment.from_wav(chunkPaths[n])
 
-    chunkedFile = 'chunksTogether.WAV'
+    chunkedFile = prepPath.split('.WAV')[0] + 'chunks.WAV'
 
     onlyVoice.export(chunkedFile, format='wav')
 
     return chunkedFile
 
 
-def processAudio(args):
+def processAudio(filePath):
     "Takes .wav file path, runs file through audio processors, and returns processed file path"
 
-    voiceAudio = deadSpace(args)
+    voiceAudio = deadSpace(filePath)
 
-    return ''
+    return voiceAudio
 
 if __name__ == '__main__':
-    processAudio(sys.argv[1:])
+    processAudio(sys.argv[1])

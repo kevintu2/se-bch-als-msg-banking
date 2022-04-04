@@ -13,6 +13,7 @@ from google.cloud import firestore
 import google.auth.transport.requests
 from google.oauth2 import id_token
 from functools import wraps
+from audio import processAudio
 
 from pyasn1.type.univ import Null
 
@@ -90,6 +91,20 @@ def upload_audio():
     blob = bucket.blob(destination_file_name)
     
     blob.upload_from_string(file.read(), content_type=file.content_type)
+    
+    # tmp folder for processed audio
+    file_path = '/tmp/' + str(fileName)
+    blob.download_to_filename(file_path)
+    processedFilePath = processAudio(file_path)
+
+    # uploads processed audio to new blob
+    dest_processed_file = f'Audio{uuid.uuid1()}.wav'
+    processedFileName = processedFilePath.split('/tmp/')[1]
+    blob = bucket.blob(dest_processed_file)
+
+    blob.upload_from_filename(processedFilePath, content_type='audio/wav')
+
+
     auth_header = request.headers['Authorization']
     idtoken = auth_header.split(' ').pop()
     claims = id_token.verify_firebase_token(
@@ -99,14 +114,14 @@ def upload_audio():
     if doc.exists:
         doc = doc.to_dict()
         if "audio" in doc:
-            doc["audio"].append({fileName: destination_file_name})
+            doc["audio"].append({processedFileName: dest_processed_file})
             user_ref.update({"audio": doc["audio"]})
         else:
-            user_ref.update({"audio": [{fileName: destination_file_name}]})
+            user_ref.update({"audio": [{processedFileName: dest_processed_file}]})
     else:
         print(u'No such document!')
     return "File {} uploaded to {}.".format(
-        fileName, destination_file_name
+        processedFileName, dest_processed_file
     )
 
 # Get Audio
