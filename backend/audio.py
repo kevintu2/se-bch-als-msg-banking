@@ -17,18 +17,17 @@ def backgNoise(args):
 
 def deadSpace(filePath):
     "Takes .wav file path, and returns voiced audio segment from file."
-    print("in deadspace function", flush=True)
     
     sample_rate = 48000
 
     prepPath = '/tmp/' + re.split('.wav|.WAV', (filePath.split('/tmp/')[1]))[0] + 'Edited.WAV'
-    print(prepPath, flush=True)
 
     # Preparation of wav file for vad function
     pySeg = AudioSegment.from_wav(filePath).set_channels(1).set_frame_rate(sample_rate).export(prepPath, format='wav')
 
     audio = vadfuncs.read_wave(prepPath)
 
+    # finds voiced audio segments
     vad = vadfuncs.webrtcvad.Vad(3)
     frames = vadfuncs.frame_generator(30, audio[0], sample_rate)
     frames = list(frames)
@@ -51,7 +50,6 @@ def deadSpace(filePath):
             onlyVoice = onlyVoice + AudioSegment.from_wav(chunkPaths[n])
 
     chunkedFile = prepPath.split('.WAV')[0] + 'chunks.WAV'
-    print(chunkedFile, flush=True)
 
     onlyVoice.export(chunkedFile, format='wav')
 
@@ -60,7 +58,7 @@ def deadSpace(filePath):
 
 def processAudio(filePath):
     "Takes .wav file path, runs file through audio processors, and returns processed file path"
-    print(filePath, flush = True)
+
     voiceAudio = deadSpace(filePath)
 
     return voiceAudio

@@ -92,20 +92,18 @@ def upload_audio():
     
     blob.upload_from_string(file.read(), content_type=file.content_type)
     
-    # tmp folder for processing
+    # tmp folder for processed audio
     file_path = '/tmp/' + str(fileName)
     blob.download_to_filename(file_path)
     processedFilePath = processAudio(file_path)
 
-    # uploading processed audio to new blob
+    # uploads processed audio to new blob
     dest_processed_file = f'Audio{uuid.uuid1()}.wav'
     processedFileName = processedFilePath.split('/tmp/')[1]
-    blob = bucket.blob(dest_processed_name)
+    blob = bucket.blob(dest_processed_file)
 
-    blob.upload_from_filename(processedFileName, content_type='audio/wav')
+    blob.upload_from_filename(processedFilePath, content_type='audio/wav')
 
-
-    print('something', flush = True)
 
     auth_header = request.headers['Authorization']
     idtoken = auth_header.split(' ').pop()
