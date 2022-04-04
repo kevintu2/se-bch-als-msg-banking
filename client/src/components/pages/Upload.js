@@ -25,7 +25,7 @@ function Upload() {
     console.log(file);
     const token = await auth.currentUser.getIdToken();
     axios
-      .post("https://api-dev-z2scpwkwva-uc.a.run.app/upload_audio", formData, {
+      .post("http://localhost:8080/upload_audio", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: token,
