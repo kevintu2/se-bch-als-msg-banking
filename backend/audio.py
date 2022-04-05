@@ -1,6 +1,7 @@
 # audio.py - contains audio processing functions
 # code in file partially pulled from: https://github.com/wiseman/py-webrtcvad/blob/master/example.py
 
+# Required imports
 import collections
 import contextlib
 import sys
@@ -62,6 +63,7 @@ def processAudio(filePath):
     voiceAudio = deadSpace(filePath)
 
     return voiceAudio
+
 
 if __name__ == '__main__':
     processAudio(sys.argv[1])
