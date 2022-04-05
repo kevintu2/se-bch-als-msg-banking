@@ -4,6 +4,7 @@ import { useHistory } from "react-router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import React, { useEffect } from "react";
 import axios from "axios";
+const url=require('../settings')
 
 function Upload() {
   const [user, loading] = useAuthState(auth);
@@ -25,7 +26,7 @@ function Upload() {
     console.log(file);
     const token = await auth.currentUser.getIdToken();
     axios
-      .post("https://api-dev-z2scpwkwva-uc.a.run.app/upload_audio", formData, {
+      .post((url+"/upload_audio"), formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: token,

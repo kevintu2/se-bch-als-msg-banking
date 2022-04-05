@@ -3,6 +3,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router";
 import { auth, db } from "../firebase";
 import axios from "axios";
+const url=require('../settings')
 
 function Retrieve() {
   const [user, loading] = useAuthState(auth);
@@ -33,7 +34,7 @@ function Retrieve() {
   const downloadClip = async (name) => {
     try {
       const response = await axios.post(
-        "https://api-dev-z2scpwkwva-uc.a.run.app/retrieve_audio",
+        (url+"/retrieve_audio"),
         {
           fileName: name,
         }
