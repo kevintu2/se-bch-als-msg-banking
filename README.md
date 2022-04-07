@@ -33,6 +33,8 @@ Follow the steps below to run and deploy the application
 
 ### Run Frontend Locally
 
+- In client/src/components, update line 1 in settings.js so that module.exports equals 'http://localhost:8080'
+
 `npm install`
 
 `npm start`
@@ -48,10 +50,11 @@ Push to `main` or create a PR to main to see the deployed website. CI/CD deploys
 ### Run Backend Locally
 
 - Setup GOOGLE_APPLICATION_CREDENTIALS as described here - <https://cloud.google.com/docs/authentication/getting-started>
+- Place the generated JSON key into the backend folder and rename it to 'serviceaccount.json"
 
 ```bash
 docker build -t als-backend .
-docker run als-backend
+docker run --env GOOGLE_APPLICATION_CREDENTIALS='./serviceaccount.json' -p 8080:8080 als-backend
 ```
 ### Note
 - Modify the Cloud Firestore DB rules, as requests are set to reject after a certain date
