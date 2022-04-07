@@ -3,24 +3,29 @@
 Boston Children's Hospital ALS Message Banking Project (Double Dipping Audio Editor)
 
 Speech impairment is common in patients with ALS. The ALS Message Banking Project aims to preserve their voice and assist them with their needs.
-The platform allows the user to login to their own dashboard where they can upload and retrieve audio files securely. The ultimate goal is to have these audio files processed and filtered automatically to enhance their sound quality and be able to reuse parts of the audio clips to produce a new "voice" for the user.
+The platform allows the user to login to their own dashboard where they can upload and retrieve audio files securely. The project currently supports two partially implemented audio processing features (deadspace trimming and file splitting). The ultimate goal is to have several fully functional filters to enhance sound quality and be able to reuse parts of the audio clips to produce a new "voice" for the user.
 
-## Technical Architecture
+## Technical Architectures
 
-![Architecture Diagram](arch.png)
+![Architecture Diagram](arch1.png)
+
+![Audio Processing Arch.](arch2.png)
 
 - Frontend:
   - React.js
 - Backend:
   - Flask Python
-  - Cloud Functions to process audio clips
+  - Audio Processing: 
+    - PyDub Library
+    - WebRTC VAD Library
+    - Noisereduce Library
 - Database:
-  - Firestore to store user information
+  - Firestore to store user information + file names
   - Google Cloud Storage for audio files
 
-## Running the Application
+## Running/Deploying the Application
 
-Follow the steps below to start the application
+Follow the steps below to run and deploy the application
 
 ## Frontend
 
@@ -48,6 +53,8 @@ Push to `main` or create a PR to main to see the deployed website. CI/CD deploys
 docker build -t als-backend .
 docker run als-backend
 ```
+### Note
+- Modify the Cloud Firestore DB rules, as requests are set to reject after a certain date
 
 ### To Deploy Backend
 
@@ -71,7 +78,7 @@ gcloud run deploy api-dev \
 
 ### Next Step - Enhance Audio Processing Features
 
-- Further develop the audio processing script to accommodate for slur and unclear subject voice
-  - Develop different filters to process voice clips
+- Further develop the audio processing features to accommodate for slur and unclear subject voice
+  - Develop additional filters to process voice clips
     - Setup Admins with the ability to edit voice clips
 - Synthesize voice clips
