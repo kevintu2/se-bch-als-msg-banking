@@ -32,7 +32,7 @@ def deadSpace(filePath):
     vad = vadfuncs.webrtcvad.Vad(3)
     frames = vadfuncs.frame_generator(30, audio[0], sample_rate)
     frames = list(frames)
-    segments = vadfuncs.vad_collector(sample_rate, 30, 650, vad, frames)
+    segments = vadfuncs.vad_collector(sample_rate, 30, 720, vad, frames)
 
     chunkPaths = []
 
@@ -42,20 +42,36 @@ def deadSpace(filePath):
         print(' Writing %s' % (path))
         vadfuncs.write_wave(path, segment, sample_rate)
 
-        currSeg = AudioSegment.from_wav(path)
+        currSeg = AudioSegment.from_wav(path).set_channels(2)
 
         if currSeg.duration_seconds >= 4:
+            currSeg.export(path, format='wav')
             chunkPaths.append(path)
-    
+
     return chunkPaths
+
+
+def modifyVol(filePaths):
+    "Takes .wav file paths, and changes average amplitude of files to -20dBFS (loudness)"
+
+    for path in filePaths:
+        pathSeg = AudioSegment.from_wav(path)
+
+        change_dBFS = -20 - pathSeg.dBFS  
+        pathSeg = pathSeg.apply_gain(change_dBFS)
+
+        pathSeg.export(path, format='wav')
+    
+    return filePaths
 
 
 def processAudio(filePath):
     "Takes .wav file path, runs file through audio processors, and returns processed file path(s)"
 
     voicedAudioPaths = deadSpace(filePath)
+    finalAudioPaths = modifyVol(voicedAudioPaths)
 
-    return voicedAudioPaths
+    return finalAudioPaths
 
 
 if __name__ == '__main__':
