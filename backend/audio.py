@@ -17,7 +17,7 @@ def backgNoise(args):
 
 
 def deadSpace(filePath):
-    "Takes .wav file path, and returns voiced audio segment from file."
+    "Takes .wav file path, and returns file paths of voiced audio segments from original file."
     
     sample_rate = 48000
 
@@ -32,7 +32,7 @@ def deadSpace(filePath):
     vad = vadfuncs.webrtcvad.Vad(3)
     frames = vadfuncs.frame_generator(30, audio[0], sample_rate)
     frames = list(frames)
-    segments = vadfuncs.vad_collector(sample_rate, 30, 300, vad, frames)
+    segments = vadfuncs.vad_collector(sample_rate, 30, 650, vad, frames)
 
     chunkPaths = []
 
@@ -46,12 +46,12 @@ def deadSpace(filePath):
 
         if currSeg.duration_seconds >= 4:
             chunkPaths.append(path)
-
+    
     return chunkPaths
 
 
 def processAudio(filePath):
-    "Takes .wav file path, runs file through audio processors, and returns processed file path"
+    "Takes .wav file path, runs file through audio processors, and returns processed file path(s)"
 
     voicedAudioPaths = deadSpace(filePath)
 
