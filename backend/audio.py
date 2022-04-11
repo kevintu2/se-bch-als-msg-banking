@@ -36,33 +36,26 @@ def deadSpace(filePath):
 
     chunkPaths = []
 
-    # Writes voice audio chunks
+    # Writes voice audio chunks + appends valid files
     for i, segment in enumerate(segments):
         path = prepPath.split('.WAV')[0] + 'chunk-'+ str(i) + '.WAV'
-        chunkPaths.append(path)
         print(' Writing %s' % (path))
         vadfuncs.write_wave(path, segment, sample_rate)
-    
-    onlyVoice = AudioSegment.from_wav(chunkPaths[0])
 
-    # Merges chunks into single file
-    if len(chunkPaths) > 1:
-        for n in range(1, len(chunkPaths)):
-            onlyVoice = onlyVoice + AudioSegment.from_wav(chunkPaths[n])
+        currSeg = AudioSegment.from_wav(path)
 
-    chunkedFile = prepPath.split('.WAV')[0] + 'chunks.WAV'
+        if currSeg.duration_seconds >= 4:
+            chunkPaths.append(path)
 
-    onlyVoice.export(chunkedFile, format='wav')
-
-    return chunkedFile
+    return chunkPaths
 
 
 def processAudio(filePath):
     "Takes .wav file path, runs file through audio processors, and returns processed file path"
 
-    voiceAudio = deadSpace(filePath)
+    voicedAudioPaths = deadSpace(filePath)
 
-    return voiceAudio
+    return voicedAudioPaths
 
 
 if __name__ == '__main__':
