@@ -17,7 +17,7 @@ def backgNoise(args):
 
 
 def deadSpace(filePath):
-    "Takes .wav file path, and returns voiced audio segment from file."
+    "Takes .wav file path, and returns file paths of voiced audio segments from original file."
     
     sample_rate = 48000
 
@@ -32,37 +32,30 @@ def deadSpace(filePath):
     vad = vadfuncs.webrtcvad.Vad(3)
     frames = vadfuncs.frame_generator(30, audio[0], sample_rate)
     frames = list(frames)
-    segments = vadfuncs.vad_collector(sample_rate, 30, 300, vad, frames)
+    segments = vadfuncs.vad_collector(sample_rate, 30, 650, vad, frames)
 
     chunkPaths = []
 
-    # Writes voice audio chunks
+    # Writes voice audio chunks + appends valid files
     for i, segment in enumerate(segments):
         path = prepPath.split('.WAV')[0] + 'chunk-'+ str(i) + '.WAV'
-        chunkPaths.append(path)
         print(' Writing %s' % (path))
         vadfuncs.write_wave(path, segment, sample_rate)
+
+        currSeg = AudioSegment.from_wav(path)
+
+        if currSeg.duration_seconds >= 4:
+            chunkPaths.append(path)
     
-    onlyVoice = AudioSegment.from_wav(chunkPaths[0])
-
-    # Merges chunks into single file
-    if len(chunkPaths) > 1:
-        for n in range(1, len(chunkPaths)):
-            onlyVoice = onlyVoice + AudioSegment.from_wav(chunkPaths[n])
-
-    chunkedFile = prepPath.split('.WAV')[0] + 'chunks.WAV'
-
-    onlyVoice.export(chunkedFile, format='wav')
-
-    return chunkedFile
+    return chunkPaths
 
 
 def processAudio(filePath):
-    "Takes .wav file path, runs file through audio processors, and returns processed file path"
+    "Takes .wav file path, runs file through audio processors, and returns processed file path(s)"
 
-    voiceAudio = deadSpace(filePath)
+    voicedAudioPaths = deadSpace(filePath)
 
-    return voiceAudio
+    return voicedAudioPaths
 
 
 if __name__ == '__main__':
