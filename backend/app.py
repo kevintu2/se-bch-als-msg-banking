@@ -128,9 +128,11 @@ def upload_audio():
     else:
         print(u'No such document!')
     
-    fileNames, destFiles = zip(*firebaseEntries)
-
-    return "Files {} uploaded to {}.".format(fileNames, destFiles)
+    if len(processedFilePaths) == 0:
+        return "No processed files to upload"
+    else:
+        fileNames, destFiles = zip(*firebaseEntries)
+        return "Files {} uploaded to {}.".format(fileNames, destFiles)
 
 # Get Audio
 
