@@ -128,9 +128,11 @@ def upload_audio():
     else:
         print(u'No such document!')
     
-    fileNames, destFiles = zip(*firebaseEntries)
-
-    return "Files {} uploaded to {}.".format(fileNames, destFiles)
+    if len(processedFilePaths) == 0:
+        return "No processed files to upload"
+    else:
+        fileNames, destFiles = zip(*firebaseEntries)
+        return "Files {} uploaded to {}.".format(fileNames, destFiles)
 
 # Get Audio
 
@@ -141,7 +143,7 @@ def retrieve_audio():
     blob = bucket.blob(fileName)
 
     url = blob.generate_signed_url(version="v4",
-                                   # This URL is valid for 15 minutes
+                                   # This URL is valid for 30 minutes
                                    expiration=datetime.timedelta(minutes=30),
                                    # Allow GET requests using this URL.
                                    method="GET",)

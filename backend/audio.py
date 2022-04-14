@@ -42,20 +42,37 @@ def deadSpace(filePath):
         print(' Writing %s' % (path))
         vadfuncs.write_wave(path, segment, sample_rate)
 
-        currSeg = AudioSegment.from_wav(path)
+        currSeg = AudioSegment.from_wav(path).set_channels(2)
 
         if currSeg.duration_seconds >= 4:
+            currSeg.export(path, format='wav')
             chunkPaths.append(path)
-    
+
     return chunkPaths
+
+
+def modifyVol(filePaths):
+    "Takes .wav file paths, and changes average amplitude of files to -15dBFS (loudness)"
+
+    for path in filePaths:
+        pathSeg = AudioSegment.from_wav(path)
+
+        # calculates dBFS change needed
+        change_dBFS = -15 - pathSeg.dBFS  
+        pathSeg = pathSeg.apply_gain(change_dBFS)
+
+        pathSeg.export(path, format='wav')
+    
+    return filePaths
 
 
 def processAudio(filePath):
     "Takes .wav file path, runs file through audio processors, and returns processed file path(s)"
 
     voicedAudioPaths = deadSpace(filePath)
+    finalAudioPaths = modifyVol(voicedAudioPaths)
 
-    return voicedAudioPaths
+    return finalAudioPaths
 
 
 if __name__ == '__main__':
