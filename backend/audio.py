@@ -32,7 +32,7 @@ def deadSpace(filePath):
     vad = vadfuncs.webrtcvad.Vad(3)
     frames = vadfuncs.frame_generator(30, audio[0], sample_rate)
     frames = list(frames)
-    segments = vadfuncs.vad_collector(sample_rate, 30, 720, vad, frames)
+    segments = vadfuncs.vad_collector(sample_rate, 30, 650, vad, frames)
 
     chunkPaths = []
 
@@ -52,12 +52,13 @@ def deadSpace(filePath):
 
 
 def modifyVol(filePaths):
-    "Takes .wav file paths, and changes average amplitude of files to -20dBFS (loudness)"
+    "Takes .wav file paths, and changes average amplitude of files to -15dBFS (loudness)"
 
     for path in filePaths:
         pathSeg = AudioSegment.from_wav(path)
 
-        change_dBFS = -20 - pathSeg.dBFS  
+        # calculates dBFS change needed
+        change_dBFS = -15 - pathSeg.dBFS  
         pathSeg = pathSeg.apply_gain(change_dBFS)
 
         pathSeg.export(path, format='wav')
