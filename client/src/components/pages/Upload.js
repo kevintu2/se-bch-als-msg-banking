@@ -143,7 +143,7 @@ function Upload() {
       <Form enctype="multipart/form-data">
         <Form.Group controlId="formFile" class="col-lg-6 offset-lg-3">
           <div className="row justify-content-center">
-            <Form.Label>Upload your data</Form.Label>
+            <Form.Label>Upload your Wav File</Form.Label>
             <Form.Control
               type="file"
               style={{ width: "50%" }}
