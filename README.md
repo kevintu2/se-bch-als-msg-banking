@@ -18,7 +18,6 @@ The platform allows the user to login to their own dashboard where they can uplo
   - Audio Processing: 
     - PyDub Library
     - WebRTC VAD Library
-    - Noisereduce Library
 - Database:
   - Firestore to store user information + file names
   - Google Cloud Storage for audio files
@@ -85,3 +84,8 @@ gcloud run deploy api-dev \
   - Develop additional filters to process voice clips
     - Setup Admins with the ability to edit voice clips
 - Synthesize voice clips
+
+### Resources Tried
+
+- Attempted to use python's noisereduce library, but the library distorsts the voice in the audio file, which affects the dead space removal functions. 
+- Dolby API imporves audio quality for processing, but requires funding. Client deciding whether they would like to use it or not. 
