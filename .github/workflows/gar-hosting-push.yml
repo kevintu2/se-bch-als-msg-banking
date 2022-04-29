@@ -1,0 +1,38 @@
+# Author: Diego
+# Modeled off example from: https://www.youtube.com/watch?v=6dLHcnlPi_U
+name: Build and Push backend Image to GAR (Google Artifact Registry) image
+
+on: 
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  gar-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: google-github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ secrets.GAR_SERVICE_ACCOUNT_KEY }}
+          project_id: als-message-banking
+          export_default_credentials: true
+      
+      - run: |
+        docker build -t us-docker.pkg.dev/als-message-banking/docker/api-dev:latest .
+        gcloud auth configure-docker --quiet
+        docker push us-docker.pkg.dev/als-message-banking/docker/api-dev:latest
+        gcloud run deploy api-dev \
+        --image=us-docker.pkg.dev/als-message-banking/docker/api-dev:latest \
+        --platform=managed \
+        --region=us-central1 \
+        --project=als-message-banking
+
+
+
+
+      
+
+    
+

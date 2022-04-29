@@ -129,6 +129,9 @@ def upload_audio():
                 user_ref.update({"audio": doc["audio"]})
             else:
                 user_ref.update({"audio": [{(procfileName): (destprocFile,folderid)}]})
+                doc = user_ref.get()
+                doc = doc.to_dict()
+
     else:
         print(u'No such document!')
     
