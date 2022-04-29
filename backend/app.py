@@ -16,6 +16,7 @@ from functools import wraps
 from audio import processAudio
 
 from pyasn1.type.univ import Null
+import sys
 
 HTTP_REQUEST = google.auth.transport.requests.Request()
 
@@ -99,14 +100,17 @@ def upload_audio():
 
     firebaseEntries = []
 
+    unique_folder="Folder "+str(uuid.uuid1()) #generates a unique folder id for all the chunks the audio file will be split into
+    
     # uploads processed audio files to new blobs
     for path in processedFilePaths:
         dest_processed_file = f'Audio{uuid.uuid1()}.wav'
         processedFileName = path.split('/tmp/')[1]
-        firebaseEntries.append((processedFileName, dest_processed_file))
+        firebaseEntries.append((processedFileName, dest_processed_file, unique_folder))
 
         blob = bucket.blob(dest_processed_file)
         blob.upload_from_filename(path, content_type='audio/wav')
+    
 
     auth_header = request.headers['Authorization']
     idtoken = auth_header.split(' ').pop()
@@ -119,12 +123,12 @@ def upload_audio():
         doc = doc.to_dict()
 
         # uploads each processed file name/path to firebase
-        for (procfileName, destprocFile) in firebaseEntries:
+        for (procfileName, destprocFile, folderid) in firebaseEntries:
             if "audio" in doc:
-                doc["audio"].append({procfileName: destprocFile})
+                doc["audio"].append({(procfileName): (destprocFile,folderid)})
                 user_ref.update({"audio": doc["audio"]})
             else:
-                user_ref.update({"audio": [{procfileName: destprocFile}]})
+                user_ref.update({"audio": [{(procfileName): (destprocFile,folderid)}]})
                 doc = user_ref.get()
                 doc = doc.to_dict()
 
@@ -134,8 +138,8 @@ def upload_audio():
     if len(processedFilePaths) == 0:
         return "No processed files to upload"
     else:
-        fileNames, destFiles = zip(*firebaseEntries)
-        return "Files {} uploaded to {}.".format(fileNames, destFiles)
+        fileNames, destFiles, folderid = zip(*firebaseEntries)
+        return "Files {} uploaded to {} in folder {}.".format(fileNames, destFiles, folderid)
 
 # Get Audio
 
