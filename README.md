@@ -3,24 +3,28 @@
 Boston Children's Hospital ALS Message Banking Project (Double Dipping Audio Editor)
 
 Speech impairment is common in patients with ALS. The ALS Message Banking Project aims to preserve their voice and assist them with their needs.
-The platform allows the user to login to their own dashboard where they can upload and retrieve audio files securely. The ultimate goal is to have these audio files processed and filtered automatically to enhance their sound quality and be able to reuse parts of the audio clips to produce a new "voice" for the user.
+The platform allows the user to login to their own dashboard where they can upload and retrieve audio files securely. The project currently supports two partially implemented audio processing features (deadspace trimming and file splitting). The ultimate goal is to have several fully functional filters to enhance sound quality and be able to reuse parts of the audio clips to produce a new "voice" for the user.
 
-## Technical Architecture
+## Technical Architectures
 
-![Architecture Diagram](arch.png)
+![Architecture Diagram](arch1.png)
+
+![Audio Processing Arch.](arch2.png)
 
 - Frontend:
   - React.js
 - Backend:
   - Flask Python
-  - Cloud Functions to process audio clips
+  - Audio Processing: 
+    - PyDub Library
+    - WebRTC VAD Library
 - Database:
-  - Firestore to store user information
+  - Firestore to store user information + file names
   - Google Cloud Storage for audio files
 
-## Running the Application
+## Running/Deploying the Application
 
-Follow the steps below to start the application
+Follow the steps below to run and deploy the application
 
 ## Frontend
 
@@ -28,13 +32,15 @@ Follow the steps below to start the application
 
 ### Run Frontend Locally
 
+- In client/src/components, update line 1 in settings.js so that module.exports equals 'http://localhost:8080'
+
 `npm install`
 
 `npm start`
 
 ### To Deploy Frontend
 
-Push to `main` or create a PR to main to see the deployed website. CI/CD deploys to Firebase Hosting. The frontend is accessible at [als-message-banking.web.app/](https://als-message-banking.web.app/)right now.
+Push to `main` or create a PR to main to see the deployed website. CI/CD deploys to Firebase Hosting. The frontend is accessible at [als-message-banking.web.app/](https://als-message-banking.web.app/) right now.
 
 ## Backend
 
@@ -43,11 +49,14 @@ Push to `main` or create a PR to main to see the deployed website. CI/CD deploys
 ### Run Backend Locally
 
 - Setup GOOGLE_APPLICATION_CREDENTIALS as described here - <https://cloud.google.com/docs/authentication/getting-started>
+- Place the generated JSON key into the backend folder and rename it to 'serviceaccount.json"
 
 ```bash
 docker build -t als-backend .
-docker run als-backend
+docker run --env GOOGLE_APPLICATION_CREDENTIALS='./serviceaccount.json' -p 8080:8080 als-backend
 ```
+### Note
+- Modify the Cloud Firestore DB rules, as requests are set to reject after a certain date
 
 ### To Deploy Backend
 
@@ -71,7 +80,12 @@ gcloud run deploy api-dev \
 
 ### Next Step - Enhance Audio Processing Features
 
-- Further develop the audio processing script to accommodate for slur and unclear subject voice
-  - Develop different filters to process voice clips
+- Further develop the audio processing features to accommodate for slur and unclear subject voice
+  - Develop additional filters to process voice clips
     - Setup Admins with the ability to edit voice clips
 - Synthesize voice clips
+
+### Resources Tried
+
+- Attempted to use python's noisereduce library, but the library distorsts the voice in the audio file, which affects the dead space removal functions. 
+- Dolby API imporves audio quality for processing, but requires funding. Client deciding whether they would like to use it or not. 

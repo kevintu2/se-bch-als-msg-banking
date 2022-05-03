@@ -1,11 +1,14 @@
+# vadfuncs - contains file manipulation functions for vad (voice activation detection)
 # code in file pulled from: https://github.com/wiseman/py-webrtcvad/blob/master/example.py
 
+# Required imports
 import collections
 import contextlib
 import sys
 import wave
 
 import webrtcvad
+
 
 def read_wave(path):
     """Reads a .wav file.
@@ -137,6 +140,7 @@ def vad_collector(sample_rate, frame_duration_ms,
     # yield it.
     if voiced_frames:
         yield b''.join([f.bytes for f in voiced_frames])
+
 
 if __name__ == '__main__':
     print('vadFuncs file')

@@ -16,6 +16,7 @@ from functools import wraps
 from audio import processAudio
 
 from pyasn1.type.univ import Null
+import sys
 
 HTTP_REQUEST = google.auth.transport.requests.Request()
 
@@ -93,37 +94,53 @@ def upload_audio():
     
     blob.upload_from_string(file.read(), content_type=file.content_type)
     
-    # tmp folder for processed audio
+    # tmp folder for processed audio files
     file_path = '/tmp/' + str(fileName)
     blob.download_to_filename(file_path)
-    processedFilePath = processAudio(file_path)
+    processedFilePaths = processAudio(file_path)
 
-    # uploads processed audio to new blob
-    dest_processed_file = f'Audio{uuid.uuid1()}.wav'
-    processedFileName = processedFilePath.split('/tmp/')[1]
-    blob = bucket.blob(dest_processed_file)
+    firebaseEntries = []
 
-    blob.upload_from_filename(processedFilePath, content_type='audio/wav')
+    unique_folder="Folder "+str(uuid.uuid1()) #generates a unique folder id for all the chunks the audio file will be split into
+    
+    # uploads processed audio files to new blobs
+    for path in processedFilePaths:
+        dest_processed_file = f'Audio{uuid.uuid1()}.wav'
+        processedFileName = path.split('/tmp/')[1]
+        firebaseEntries.append((processedFileName, dest_processed_file, unique_folder))
 
+        blob = bucket.blob(dest_processed_file)
+        blob.upload_from_filename(path, content_type='audio/wav')
+    
 
     auth_header = request.headers['Authorization']
     idtoken = auth_header.split(' ').pop()
     claims = id_token.verify_firebase_token(
         idtoken, HTTP_REQUEST, audience=os.environ.get('GOOGLE_CLOUD_PROJECT'))
     user_ref = users_collection.document(claims['sub'])
+
     doc = user_ref.get()
-    if doc.exists:
+    if doc.exists:        
         doc = doc.to_dict()
-        if "audio" in doc:
-            doc["audio"].append({processedFileName: dest_processed_file})
-            user_ref.update({"audio": doc["audio"]})
-        else:
-            user_ref.update({"audio": [{processedFileName: dest_processed_file}]})
+
+        # uploads each processed file name/path to firebase
+        for (procfileName, destprocFile, folderid) in firebaseEntries:
+            if "audio" in doc:
+                doc["audio"].append({(procfileName): (destprocFile,folderid)})
+                user_ref.update({"audio": doc["audio"]})
+            else:
+                user_ref.update({"audio": [{(procfileName): (destprocFile,folderid)}]})
+                doc = user_ref.get()
+                doc = doc.to_dict()
+
     else:
         print(u'No such document!')
-    return "File {} uploaded to {}.".format(
-        processedFileName, dest_processed_file
-    )
+    
+    if len(processedFilePaths) == 0:
+        return "No processed files to upload"
+    else:
+        fileNames, destFiles, folderid = zip(*firebaseEntries)
+        return "Files {} uploaded to {} in folder {}.".format(fileNames, destFiles, folderid)
 
 # Get Audio
 
@@ -134,7 +151,7 @@ def retrieve_audio():
     blob = bucket.blob(fileName)
 
     url = blob.generate_signed_url(version="v4",
-                                   # This URL is valid for 15 minutes
+                                   # This URL is valid for 30 minutes
                                    expiration=datetime.timedelta(minutes=30),
                                    # Allow GET requests using this URL.
                                    method="GET",)
